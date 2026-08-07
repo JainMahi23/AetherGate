@@ -33,12 +33,39 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+
+                        // Public
                         .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
                         ).permitAll()
+
+                        // Provider - Read
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.GET,
+                                "/api/v1/providers/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        // Provider - Create
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.POST,
+                                "/api/v1/providers/**"
+                        ).hasRole("ADMIN")
+
+                        // Provider - Update
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.PUT,
+                                "/api/v1/providers/**"
+                        ).hasRole("ADMIN")
+
+                        // Provider - Delete
+                        .requestMatchers(
+                                org.springframework.http.HttpMethod.DELETE,
+                                "/api/v1/providers/**"
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
