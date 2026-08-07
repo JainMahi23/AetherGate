@@ -1,0 +1,29 @@
+package com.aethergate.gateway.routing.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChatRequest {
+
+    @NotBlank(message = "Prompt is required.")
+    private String prompt;
+
+    /**
+     * Optional.
+     * Example:
+     * OPENAI
+     * GEMINI
+     * CLAUDE
+     *
+     * If null, routing engine will decide.
+     */
+    private String provider;
+
+}
