@@ -1,5 +1,5 @@
 package com.aethergate.gateway.common.exception;
-
+import com.aethergate.gateway.llm.exception.LlmProviderException;
 import com.aethergate.gateway.common.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,21 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(LlmProviderException.class)
+    public ResponseEntity<ErrorResponse> handleLlmProviderException(
+            LlmProviderException ex) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                false,
+                ex.getMessage(),
+                ex.getErrorCode(),
+                java.time.LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(ex.getStatus())
+                .body(errorResponse);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(
             MethodArgumentNotValidException exception) {

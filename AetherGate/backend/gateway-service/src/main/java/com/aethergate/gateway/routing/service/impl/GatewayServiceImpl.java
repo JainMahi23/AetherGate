@@ -1,7 +1,6 @@
 package com.aethergate.gateway.routing.service.impl;
 
 import com.aethergate.gateway.llm.factory.LlmProviderFactory;
-import com.aethergate.gateway.llm.service.LlmProviderService;
 import com.aethergate.gateway.routing.dto.ChatRequest;
 import com.aethergate.gateway.routing.dto.ChatResponse;
 import com.aethergate.gateway.routing.service.GatewayService;
@@ -17,15 +16,21 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public ChatResponse chat(ChatRequest request) {
 
-        String providerName = request.getProvider();
+        String provider = request.getProvider();
 
-        if (providerName == null || providerName.isBlank()) {
-            providerName = "OPENAI";
+        if (provider == null || provider.isBlank()) {
+            provider = "GEMINI";
         }
 
-        LlmProviderService provider =
-                providerFactory.getProvider(providerName);
+        switch (provider.toUpperCase()) {
 
-        return provider.chat(request);
+            case "GEMINI":
+                return providerFactory.getGeminiClient().generate(request);
+
+            default:
+                throw new IllegalArgumentException(
+                        "Unsupported provider: " + provider
+                );
+        }
     }
 }
