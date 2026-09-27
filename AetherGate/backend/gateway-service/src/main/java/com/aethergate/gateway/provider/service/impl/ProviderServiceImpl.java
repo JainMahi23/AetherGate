@@ -56,7 +56,7 @@ public class ProviderServiceImpl implements ProviderService {
                                            UpdateProviderRequest request) {
 
         Provider provider = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Provider not found."));
+                .orElseThrow(() -> new ProviderNotFoundException(id));
 
         provider.setProviderName(request.getProviderName());
         provider.setBaseUrl(request.getBaseUrl());
@@ -74,7 +74,7 @@ public class ProviderServiceImpl implements ProviderService {
     public void deleteProvider(Long id) {
 
         Provider provider = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Provider not found."));
+                .orElseThrow(() -> new ProviderNotFoundException(id));
 
         repository.delete(provider);
     }

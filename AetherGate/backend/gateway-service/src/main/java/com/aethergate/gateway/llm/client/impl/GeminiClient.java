@@ -29,7 +29,7 @@ public class GeminiClient implements LlmClient {
 
     @Override
     public ChatResponse generate(ChatRequest request) {
-
+        long startTime = System.currentTimeMillis();
         GeminiRequest geminiRequest = GeminiRequest.builder()
                 .contents(List.of(
                         GeminiRequest.Content.builder()
@@ -43,9 +43,7 @@ public class GeminiClient implements LlmClient {
                 .build();
 
         GeminiResponse response = webClient.post()
-                .uri(baseUrl
-                        + "/v1beta/models/gemini-2.0-flash:generateContent?key="
-                        + apiKey)
+                .uri(baseUrl + "/v1beta/models/gemini-3.6-flash:generateContent?key=" + apiKey)
                 .bodyValue(geminiRequest)
                 .retrieve()
                 .onStatus(
@@ -112,10 +110,12 @@ public class GeminiClient implements LlmClient {
                 .get(0)
                 .getText();
 
+        long responseTime = System.currentTimeMillis() - startTime;
+
         return ChatResponse.builder()
                 .provider("GEMINI")
                 .response(text)
-                .responseTime(0)
+                .responseTime(responseTime)
                 .build();
     }
 }
