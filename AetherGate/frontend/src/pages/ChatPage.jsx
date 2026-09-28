@@ -124,7 +124,7 @@ export default function ChatPage() {
       <ChatInput
         onSubmit={handleGenerate}
         isGenerating={isGenerating}
-        initialValue={currentPrompt}
+        initialValue={location.state?.prompt || ''}
       />
 
       {/* Error alert if any */}

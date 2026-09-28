@@ -26,7 +26,13 @@ export function ChatInput({ onSubmit, isGenerating, initialValue = '' }) {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     if (!prompt.trim() || isGenerating) return;
-    onSubmit(prompt.trim());
+    const submitted = prompt.trim();
+    setPrompt('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.focus();
+    }
+    onSubmit(submitted);
   };
 
   const handleKeyDown = (e) => {
