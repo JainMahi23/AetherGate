@@ -13,9 +13,29 @@ export async function loginUser(email, password) {
 /**
  * POST /api/v1/auth/register
  * Request: { fullName, email, password }
- * Response: ApiResponse<{ accessToken, tokenType }>
+ * Response: ApiResponse<{ accessToken (null), tokenType }>
  */
 export async function registerUser(fullName, email, password) {
   const response = await api.post('/api/v1/auth/register', { fullName, email, password });
+  return response.data;
+}
+
+/**
+ * POST /api/v1/auth/verify-otp
+ * Request: { email, otp }
+ * Response: ApiResponse<null>
+ */
+export async function verifyOtp(email, otp) {
+  const response = await api.post('/api/v1/auth/verify-otp', { email, otp });
+  return response.data;
+}
+
+/**
+ * POST /api/v1/auth/resend-otp
+ * Request: { email }
+ * Response: ApiResponse<null>
+ */
+export async function resendOtp(email) {
+  const response = await api.post('/api/v1/auth/resend-otp', { email });
   return response.data;
 }

@@ -17,6 +17,7 @@ public class UserMapper {
                 .password(request.getPassword())
                 .role(Role.ROLE_USER)
                 .enabled(true)
+                .emailVerified(false)
                 .build();
     }
 

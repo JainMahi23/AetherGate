@@ -208,17 +208,7 @@ export default function LoginPage() {
             </Link>
           </p>
 
-          {/* Security notice */}
-          <div
-            className="mt-8 p-3 rounded-xl text-xs text-center"
-            style={{
-              backgroundColor: 'var(--bg-tertiary)',
-              color: 'var(--text-muted)',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            🔒 Secured by JWT authentication · Your credentials are never stored in the browser
-          </div>
+
         </div>
       </div>
     </div>

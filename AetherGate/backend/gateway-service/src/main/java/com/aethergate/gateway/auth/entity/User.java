@@ -54,6 +54,19 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "email_verified", nullable = false)
+    @Builder.Default
+    private Boolean emailVerified = false;
+
+    @Column(name = "otp_hash")
+    private String otpHash;
+
+    @Column(name = "otp_expiry")
+    private LocalDateTime otpExpiry;
+
+    @Column(name = "otp_resend_after")
+    private LocalDateTime otpResendAfter;
+
     @PrePersist
     public void prePersist() {
 

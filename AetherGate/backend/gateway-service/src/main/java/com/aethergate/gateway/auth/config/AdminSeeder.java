@@ -30,6 +30,7 @@ public class AdminSeeder implements CommandLineRunner {
                 .password(passwordEncoder.encode("Admin@123"))
                 .role(Role.ROLE_ADMIN)
                 .enabled(true)
+                .emailVerified(true)
                 .build();
 
         userRepository.save(admin);

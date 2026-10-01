@@ -3,6 +3,8 @@ package com.aethergate.gateway.auth.controller;
 import com.aethergate.gateway.auth.dto.AuthResponse;
 import com.aethergate.gateway.auth.dto.LoginRequest;
 import com.aethergate.gateway.auth.dto.RegisterRequest;
+import com.aethergate.gateway.auth.dto.ResendOtpRequest;
+import com.aethergate.gateway.auth.dto.VerifyOtpRequest;
 import com.aethergate.gateway.auth.service.AuthService;
 import com.aethergate.gateway.common.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -26,7 +28,7 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(
-                        "User registered successfully.",
+                        "Registration successful. Please verify your email.",
                         response
                 ));
     }
@@ -41,6 +43,34 @@ public class AuthController {
                 ApiResponse.success(
                         "Login successful.",
                         response
+                )
+        );
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<ApiResponse<Void>> verifyOtp(
+            @Valid @RequestBody VerifyOtpRequest request) {
+
+        authService.verifyOtp(request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Email verified successfully. You can now log in.",
+                        null
+                )
+        );
+    }
+
+    @PostMapping("/resend-otp")
+    public ResponseEntity<ApiResponse<Void>> resendOtp(
+            @Valid @RequestBody ResendOtpRequest request) {
+
+        authService.resendOtp(request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Verification code sent successfully.",
+                        null
                 )
         );
     }
