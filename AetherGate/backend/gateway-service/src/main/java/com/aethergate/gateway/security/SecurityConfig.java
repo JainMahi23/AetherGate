@@ -33,7 +33,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-
+                        .requestMatchers("/api/v1/health").permitAll()
                         // Public
                         .requestMatchers(
                                 "/api/v1/auth/**",
