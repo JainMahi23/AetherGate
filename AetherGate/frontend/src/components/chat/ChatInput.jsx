@@ -61,7 +61,7 @@ export function ChatInput({ onSubmit, isGenerating, initialValue = '' }) {
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={isGenerating}
-          placeholder="Ask anything or test multi-LLM routing... (Shift+Enter for newline, Enter to send)"
+          placeholder="Ask me anything… (Shift+Enter for newline, Enter to send)"
           rows={3}
           className="w-full bg-transparent resize-none border-none outline-none text-sm p-2 transition-colors disabled:opacity-50"
           style={{
@@ -102,10 +102,10 @@ export function ChatInput({ onSubmit, isGenerating, initialValue = '' }) {
             className="px-5 py-2 text-xs font-semibold rounded-lg shadow-sm"
           >
             {isGenerating ? (
-              <span>Generating...</span>
+              <span>Sending…</span>
             ) : (
               <>
-                <span>Generate</span>
+                <span>Send</span>
                 <Send size={14} />
               </>
             )}

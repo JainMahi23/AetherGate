@@ -22,11 +22,12 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor — handle 401 globally
+// Response interceptor — handle 401 globally (expired/invalid JWT)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthEndpoint = error.config?.url?.includes('/api/v1/auth/');
+    if (error.response?.status === 401 && !isAuthEndpoint) {
       // Clear stale token and redirect to login
       localStorage.removeItem('aethergate_token');
       if (window.location.pathname !== '/login') {

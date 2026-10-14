@@ -52,12 +52,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleLlmProviderException(
             LlmProviderException ex) {
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                false,
-                ex.getMessage(),
-                ex.getErrorCode(),
-                java.time.LocalDateTime.now()
-        );
+        log.warn("LLM provider error [{}]: {}", ex.getProvider(), ex.getMessage());
+
+        // User-friendly message; never expose provider names or internal error codes
+        String userMessage;
+        if (ex.getStatus() == HttpStatus.TOO_MANY_REQUESTS) {
+            userMessage = "The service is currently busy. Please try again in a moment.";
+        } else if (ex.getStatus() == HttpStatus.SERVICE_UNAVAILABLE) {
+            userMessage = "The service is temporarily unavailable. Please try again later.";
+        } else {
+            userMessage = "Something went wrong while generating a response. Please try again.";
+        }
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .success(false)
+                .message(userMessage)
+                .errorCode("SERVICE_ERROR")
+                .build();
 
         return ResponseEntity
                 .status(ex.getStatus())

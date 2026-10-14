@@ -1,5 +1,6 @@
 package com.aethergate.gateway.auth.service;
 
+import com.aethergate.gateway.auth.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +39,8 @@ public class EmailService {
             log.info("OTP email sent to {}", toEmail);
         } catch (Exception e) {
             log.error("Failed to send OTP email to {}: {}", toEmail, e.getMessage());
-            throw new RuntimeException("Failed to send verification email. Please try again.");
+            throw new InvalidCredentialsException(
+                    "Failed to send verification email. Please try again later.");
         }
     }
 }

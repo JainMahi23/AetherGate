@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MessageSquare, Sparkles, AlertCircle, History as HistoryIcon, RefreshCw } from 'lucide-react';
-import { ProviderSelector } from '../components/chat/ProviderSelector';
+import { MessageSquare } from 'lucide-react';
 import { ChatInput } from '../components/chat/ChatInput';
-import { RoutingAnimation } from '../components/chat/RoutingAnimation';
 import { ChatResponse } from '../components/chat/ChatResponse';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
 import { sendChat } from '../services/chatService';
@@ -18,8 +16,6 @@ export default function ChatPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [responseData, setResponseData] = useState(null);
-  const [resolvedProvider, setResolvedProvider] = useState(null);
-  const [responseTime, setResponseTime] = useState(null);
   const [error, setError] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
@@ -37,8 +33,6 @@ export default function ChatPage() {
         response: location.state.response,
         responseTime: location.state.responseTime || 0,
       });
-      setResolvedProvider(location.state.provider);
-      setResponseTime(location.state.responseTime);
       setIsSaved(true);
     }
   }, [location.state]);
@@ -47,8 +41,6 @@ export default function ChatPage() {
     setCurrentPrompt(prompt);
     setError('');
     setResponseData(null);
-    setResolvedProvider(null);
-    setResponseTime(null);
     setIsSaved(false);
     setIsGenerating(true);
 
@@ -59,10 +51,8 @@ export default function ChatPage() {
 
       if (result?.data) {
         setResponseData(result.data);
-        setResolvedProvider(result.data.provider);
-        setResponseTime(result.data.responseTime);
 
-        // Auto-save session work to history or allow manual save
+        // Auto-save to history
         addEntry({
           prompt,
           response: result.data.response,
@@ -71,7 +61,7 @@ export default function ChatPage() {
         });
         setIsSaved(true);
       } else {
-        setError('Server responded without data payload.');
+        setError('Something went wrong. Please try again.');
       }
     } catch (err) {
       setError(getErrorMessage(err));
@@ -93,32 +83,16 @@ export default function ChatPage() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto animate-fade-in pb-12">
-      {/* Title & Gateway Mission */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-            <MessageSquare size={22} className="text-indigo-500" />
-            Chat Playground
-          </h1>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-            Experience multi-model intelligence with automated fallback & latency routing
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs px-3 py-1 rounded-full border flex items-center gap-1.5 font-medium" style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
-            <Sparkles size={13} className="text-indigo-400" />
-            Gateway Router Active
-          </span>
-        </div>
+      {/* Title */}
+      <div>
+        <h1 className="text-xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+          <MessageSquare size={22} className="text-indigo-500" />
+          Chat
+        </h1>
+        <p className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+          Ask anything — get intelligent answers
+        </p>
       </div>
-
-      {/* Provider Selector */}
-      <ProviderSelector
-        selectedProvider={selectedProvider}
-        onSelectProvider={setSelectedProvider}
-        disabled={isGenerating}
-      />
 
       {/* Input box */}
       <ChatInput
@@ -135,13 +109,14 @@ export default function ChatPage() {
         />
       )}
 
-      {/* Routing pipeline simulation */}
-      <RoutingAnimation
-        isGenerating={isGenerating}
-        targetProvider={selectedProvider}
-        resolvedProvider={resolvedProvider}
-        responseTime={responseTime}
-      />
+      {/* Loading indicator */}
+      {isGenerating && (
+        <div className="flex items-center gap-3 p-4 rounded-xl border animate-pulse"
+          style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+          <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Generating response…</span>
+        </div>
+      )}
 
       {/* Response Display */}
       {responseData && (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Server, CheckCircle, Activity, Zap, RefreshCw, ArrowRight, GitBranch } from 'lucide-react';
+import { Server, CheckCircle, Activity, Zap, RefreshCw, ArrowRight } from 'lucide-react';
 import { MetricCard } from '../components/dashboard/MetricCard';
 import { ProviderStatusCard } from '../components/dashboard/ProviderStatusCard';
 import { PageLoader } from '../components/ui/LoadingSpinner';
@@ -70,7 +70,7 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-            One Gateway. Multiple AI Models. Intelligent Routing.
+            Overview of your AetherGate workspace
           </p>
         </div>
         <Button
@@ -119,54 +119,6 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Gateway flow visualization */}
-      <div
-        className="card p-6"
-        style={{ borderColor: 'var(--border-color)' }}
-      >
-        <div className="flex items-center gap-2 mb-5">
-          <GitBranch size={18} style={{ color: 'var(--accent-primary)' }} />
-          <h2 className="text-base font-semibold" style={{ color: 'var(--text-primary)' }}>
-            Gateway Architecture
-          </h2>
-        </div>
-
-        <div className="flex items-center gap-2 flex-wrap text-sm">
-          {[
-            { label: 'Your Request', color: 'var(--accent-info)' },
-            null, // arrow
-            { label: 'AetherGate', color: 'var(--accent-primary)', highlight: true },
-            null,
-            { label: 'Routing Engine', color: 'var(--accent-warning)' },
-            null,
-            { label: 'Gemini / Groq', color: 'var(--accent-success)' },
-            null,
-            { label: 'Response', color: 'var(--accent-info)' },
-          ].map((item, i) =>
-            item === null ? (
-              <ArrowRight key={i} size={16} style={{ color: 'var(--text-muted)' }} />
-            ) : (
-              <div
-                key={i}
-                className="px-3 py-1.5 rounded-lg font-medium text-xs"
-                style={{
-                  backgroundColor: item.highlight
-                    ? 'var(--accent-primary)'
-                    : `${item.color}15`,
-                  color: item.highlight ? 'white' : item.color,
-                  border: `1px solid ${item.color}30`,
-                }}
-              >
-                {item.label}
-              </div>
-            )
-          )}
-        </div>
-
-        <p className="text-xs mt-4" style={{ color: 'var(--text-muted)' }}>
-          AetherGate intelligently routes every request to the best available AI provider based on priority, health, and availability.
-        </p>
-      </div>
 
       {/* Provider status */}
       <div>
@@ -215,10 +167,10 @@ export default function DashboardPage() {
                 <Zap size={18} style={{ color: 'var(--accent-primary)' }} />
               </div>
               <div className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
-                Chat Playground
+                Chat
               </div>
               <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-                Send prompts and see routing in action
+                Ask questions and get intelligent answers
               </div>
             </div>
             <ArrowRight
@@ -246,7 +198,7 @@ export default function DashboardPage() {
                 Metrics & Analytics
               </div>
               <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-                View provider performance data
+                View usage and performance stats
               </div>
             </div>
             <ArrowRight

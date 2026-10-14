@@ -51,6 +51,10 @@ export default function RegisterPage() {
     if (!email.trim()) { setError('Email is required.'); return; }
     if (!password) { setError('Password is required.'); return; }
     if (password.length < 8) { setError('Password must be at least 8 characters.'); return; }
+    if (!/[A-Z]/.test(password)) { setError('Password must contain at least one uppercase letter.'); return; }
+    if (!/[a-z]/.test(password)) { setError('Password must contain at least one lowercase letter.'); return; }
+    if (!/\d/.test(password)) { setError('Password must contain at least one number.'); return; }
+    if (!/[^A-Za-z0-9]/.test(password)) { setError('Password must contain at least one special character.'); return; }
 
     setLoading(true);
     try {
@@ -165,7 +169,7 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-primary)' }}>
                   Password
                   <span className="ml-1 text-xs font-normal" style={{ color: 'var(--text-muted)' }}>
-                    (min 8 characters)
+                    (min 8 chars, uppercase, lowercase, number, special)
                   </span>
                 </label>
                 <div className="relative">
